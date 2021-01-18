@@ -8,7 +8,10 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-# 사이트 설정
+# ==============================================================================================================
+
+# 0. 사이트 설정
+
 print()
 print('='*10,'프로그램이 실행됩니다.','='*10)
 print()
@@ -27,7 +30,7 @@ save_path = r'C:\Users\pjk\desktop'
 
 # ==============================================================================================================
 
-# 0. 인베스팅닷컴 완료.
+# 1. 인베스팅닷컴
 
 if site_num == 0:
     choose0 = {
@@ -186,7 +189,7 @@ if site_num == 0:
 
 # ===============================================================================================================================================
 
-# 1. 통계청 완료
+# 2. 통계청
 
 # 자료 주기 입력
 elif site_num == 1:
@@ -347,7 +350,7 @@ elif site_num == 1:
               
 # ===================================================================================================================================        
 
-# 2. FRED
+# 3. FRED
 
 else:
     urls = {
@@ -387,9 +390,14 @@ else:
             data = [keys[i], find]
             writer.writerow(data)
     else:
-        for i,url in enumerate(urls):
-            keys = list(urls.keys())
-            url = urls[keys[i]]
+        t_list = input('목록의 작은 따옴표 내 검색할 대상을 똑같이 입력해 주세요.\n각 대상은 쉼표(,)로 구분합니다. 예시) 실업률,S&P 500\n\n입력 : ').split(',')
+        for i, url in enumerate(t_list):
+            url = urls[str(t_list[i])] # choose 수정
+            print()
+            print(t_list[i],'데이터 link : '.format(i + 1), url)
+        # for i,url in enumerate(t_list):
+        #     keys = list(urls.keys())
+        #     url = urls[keys[i]]
             browser = webdriver.Chrome()
             browser.maximize_window()
             browser.get(url)        
@@ -397,16 +405,17 @@ else:
             startd.click()
             startd.clear()
             startd.send_keys('2006-01-02')
-            time.sleep(1)
+            time.sleep(1.5)
             endd = browser.find_element_by_xpath('//*[@id="input-coed"]')
             endd.click()
             endd.clear()
             endd.send_keys('2021-01-18')
-            time.sleep(1)
+            time.sleep(1.5)
             
             # 표 정보 수정
             browser.find_element_by_xpath('//*[@id="edit-graph-button"]/a[1]').click()
             time.sleep(1)
+
             # 빈도 수정 combobox 문제 해결!
             freq = browser.find_element_by_xpath('//*[@id="frequency-select"]')
             freq.click()
@@ -417,20 +426,20 @@ else:
                 if optionEle.text == 'Monthly':
                     optionEle.click()
                     break
-                # 표 수정창 닫기
-                browser.find_element_by_xpath('//*[@id="tabs-with-dropdown"]/div[1]/header/div[2]/a').click()
-                time.sleep(1)
-                # 다운로드
-                browser.find_element_by_xpath('//*[@id="download-button"]').click()
-                time.sleep(1)     
-                browser.find_element_by_xpath('//*[@id="download-data-csv"]').click()
-                time.sleep(1)
+            # 표 수정창 닫기
+            browser.find_element_by_xpath('//*[@id="tabs-with-dropdown"]/div[1]/header/div[2]/a').click()
+            time.sleep(1)
+            # 다운로드
+            browser.find_element_by_xpath('//*[@id="download-button"]').click()
+            time.sleep(1)     
+            browser.find_element_by_xpath('//*[@id="download-data-csv"]').click()
+            
 
 # for 반복문 완료 후 종료
 print('='*100)    
 try:
     browser.quit()
-    print('모든 과정이 완료됐습니다.\n브라우저를 종료합니다.')
+    print('모든 과정이 완료됐습니다.\n5초 뒤 브라우저를 종료합니다.')
 except:
     print('모든 과정이 완료됐습니다.\n프로그램을 종료합니다.')
 else:
