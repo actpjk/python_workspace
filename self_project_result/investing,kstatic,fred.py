@@ -11,7 +11,6 @@ from selenium.webdriver.support import expected_conditions as EC
 # 사이트 설정
 print()
 print('='*10,'프로그램이 실행됩니다.','='*10)
-time.sleep(2)
 print()
 
 print('사이트를 선택하세요.')
@@ -356,33 +355,76 @@ else:
             '10년 채권 - 2년 채권':'https://fred.stlouisfed.org/series/T10Y2Y',
             '실업률':'https://fred.stlouisfed.org/series/UNRATE',
             '82년 100기준 소비자가격지수':'https://fred.stlouisfed.org/series/CPIAUCSL',
-            'BEI 기대인플레이션율':'https://fred.stlouisfed.org/series/T10YIE',
+            '10-Year Treasury Inflation-Indexed Security':'https://fred.stlouisfed.org/series/DFII10',
+            '10-Year Breakeven Inflation Rate':'https://fred.stlouisfed.org/series/T10YIE',
             '19년 3분기 1.381, 통화유통속도':'https://fred.stlouisfed.org/series/M2V',
             '11월 30일 18998, M2 통화량':'https://fred.stlouisfed.org/series/M2',
             'S&P 500':'https://fred.stlouisfed.org/series/SP500'
     }
-
-    keys = list(urls.keys())
-    values = list(urls.values())
-    print('='*100)
-    curr_time = time.strftime('[%Y년 %m월 %d일 %H시 %M분 기준]\n')
-    print(curr_time)
-    f = open('C://Users//pjk//Desktop//check//today.csv', 'a', encoding='utf-8-sig', newline='') # newline 자동 줄바꿈 ''로 없앰
-    writer = csv.writer(f)
-    writer.writerow([curr_time])
+    print('[데이터 목록]\n\n',list(urls.keys()))
     print()
-    print('C://Users//pjk//Desktop//check//today.csv에 저장됩니다.')
+    choice = int(input('지수 확인 = 1, 데이터 다운로드 = 2\n\n입력 : '))
+    if choice == 1:
+        keys = list(urls.keys())
+        values = list(urls.values())
+        print('='*100)
+        curr_time = time.strftime('[%Y년 %m월 %d일 %H시 %M분 기준]\n')
+        print(curr_time)  
+        print('바탕화면에 저장됩니다.')
+        print()
+        f = open('C://Users//pjk//Desktop//indexcheck.csv', 'a', encoding='utf-8-sig', newline='') # newline 자동 줄바꿈 ''로 없앰
+        writer = csv.writer(f)
+        writer.writerow([curr_time])
 
-    for i,url in enumerate(urls):
-        url = urls[keys[i]]
-        headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36'}
-        res = requests.get(url,headers=headers)
-        res.raise_for_status()
-        soup = BeautifulSoup(res.text, 'lxml')
-        find = soup.find('span', attrs = {'class':'series-meta-observation-value'}).get_text().strip()
-        print(keys[i],' : ',find)
-        data = [keys[i], find]
-        writer.writerow(data)
+        for i,url in enumerate(urls):
+            url = urls[keys[i]]
+            headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36'}
+            res = requests.get(url,headers=headers)
+            res.raise_for_status()
+            soup = BeautifulSoup(res.text, 'lxml')
+            find = soup.find('span', attrs = {'class':'series-meta-observation-value'}).get_text().strip()
+            print(keys[i],' : ',find)
+            data = [keys[i], find]
+            writer.writerow(data)
+    else:
+        for i,url in enumerate(urls):
+            keys = list(urls.keys())
+            url = urls[keys[i]]
+            browser = webdriver.Chrome()
+            browser.maximize_window()
+            browser.get(url)        
+            startd = browser.find_element_by_xpath('//*[@id="input-cosd"]')
+            startd.click()
+            startd.clear()
+            startd.send_keys('2006-01-02')
+            time.sleep(1)
+            endd = browser.find_element_by_xpath('//*[@id="input-coed"]')
+            endd.click()
+            endd.clear()
+            endd.send_keys('2021-01-18')
+            time.sleep(1)
+            
+            # 표 정보 수정
+            browser.find_element_by_xpath('//*[@id="edit-graph-button"]/a[1]').click()
+            time.sleep(1)
+            # 빈도 수정 combobox 문제 해결!
+            freq = browser.find_element_by_xpath('//*[@id="frequency-select"]')
+            freq.click()
+            selectEle = browser.find_element_by_id('frequency-select')
+            selectEle.click()
+            options=selectEle.find_elements_by_tag_name('option')
+            for optionEle in options:
+                if optionEle.text == 'Monthly':
+                    optionEle.click()
+                    break
+                # 표 수정창 닫기
+                browser.find_element_by_xpath('//*[@id="tabs-with-dropdown"]/div[1]/header/div[2]/a').click()
+                time.sleep(1)
+                # 다운로드
+                browser.find_element_by_xpath('//*[@id="download-button"]').click()
+                time.sleep(1)     
+                browser.find_element_by_xpath('//*[@id="download-data-csv"]').click()
+                time.sleep(1)
 
 # for 반복문 완료 후 종료
 print('='*100)    
