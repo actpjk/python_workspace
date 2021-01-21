@@ -5,15 +5,15 @@
 # trip_to = travel.Thailand.ThailandPackage()
 # trip_to.detail()
 
-# from travel.Thailand import ThailandPackage
-# trip_tp = ThailandPackage()
-# trip_to.detail()
+from travel.Thailand import ThailandPackage
+trip_tp = ThailandPackage()
+trip_to.detail()
 
 # from travel import Vietnam
 # trip_to = Vietnam.VietnamPackage()
 # trip_to.detail()
 
 # < __all__ >
-from travel import * # 임포트 되길 원하는 것만 공개하고 아닌 것은 비공개로 처리 가능.
-trip_to = Thailand.ThailandPackage()
-trip_to.detail()  
+# from travel import * # 임포트 되길 원하는 것만 공개하고 아닌 것은 비공개로 처리 가능.
+# trip_to = Thailand.ThailandPackage()
+# trip_to.detail()  

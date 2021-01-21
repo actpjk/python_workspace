@@ -21,6 +21,7 @@ class AttackUnit(Unit): # self 는 자기자신 class에 self는 반드시 적�
     def attack(self, location):
         print('{0} : {1} 방향으로 적군을 공격 합니다. [공격력 {2}]'\
             .format(self.name, location, self.damage))
+
     def damaged(self, damage):
         print('{0} : {1} 데미지를 입었습니다.'.format(self.name, damage))
         self.hp -= damage
@@ -39,7 +40,7 @@ class Flyable:
         print('{0} : {1} 방향으로 날아갑니다. [속도 {2}]'\
             .format(name, location, self.flying_speed))
 
-# 공중 공격 유닛 클래스
+# 메소드 오버라이딩, 공중 공격 유닛 클래스
 class FlyableAttackUnit(AttackUnit, Flyable):
     def __init__(self, name, hp, damage, flying_speed):
         AttackUnit.__init__(self, name, hp, 0, damage)
@@ -48,6 +49,9 @@ class FlyableAttackUnit(AttackUnit, Flyable):
     def move(self, location): # 메소드 오버라이딩
         print('[공중 유닛 이동]')
         self.fly(self.name, location)
+
+marine = AttackUnit('마린', 50, 3, 2)
+marine.damaged(5)
 
 valkyrie = FlyableAttackUnit('발키리', 200, 6, 5)
 valkyrie.fly(valkyrie.name, '3시')
