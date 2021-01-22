@@ -443,4 +443,4 @@ try:
 except:
     print('모든 과정이 완료됐습니다.\n프로그램을 종료합니다.')
 else:
-    time.sleep(5)    
+    time.sleep(5)  
