@@ -12,7 +12,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 # =============================================================================================================================================================================        
 
-# 함수 (인베스팅 : 0, 통계청 : 1, FRED : 2 or else)
+# function
 
 def urls():      
     if site_num == 0:
@@ -129,7 +129,7 @@ def search():
         print('\n[인베스팅닷컴 검색 목록]\n\n', list(select.keys()),'\n')
     elif site_num == 1:
         print('\n[통계청 검색 목록]\n\n', list(select[0].keys()),'\n')
-    else: # FRED Data의 경우 print 함수를 이용한 체크 기능, 데이터 다운로드 기능 2개
+    else:
         print()
         view = int(input('지수 확인 = 1, 데이터 다운로드 = 2\n\n입력 : '))
         if view == 1:
@@ -147,7 +147,7 @@ def search():
 
 # =============================================================================================================================================================================        
 
-# 0. 초기 설정
+# 0. setting
 
 print('\n','='*10,'프로그램이 실행됩니다.','='*10,'\n')
 print('사이트를 선택하세요.\n')
@@ -179,7 +179,7 @@ options.add_experimental_option("prefs", {
 
 # =============================================================================================================================================================================        
 
-# 1. 인베스팅닷컴
+# 1. investing.com
 
 if site_num == 0:
 
@@ -192,7 +192,6 @@ if site_num == 0:
         url = select[search_list[i]]
         print('\n',search_list[i], '데이터 link : '.format(i + 1), url)
 
-        # selenium
         browser = webdriver.Chrome(options=options)
         browser.maximize_window()
         browser.get(url)
@@ -204,7 +203,7 @@ if site_num == 0:
         else:
             WebDriverWait(browser, 60).until(EC.presence_of_element_located((By.XPATH, '//*[@id="data_interval"]'))).click()
         
-        # 일간,주간,월간 선택
+        # 자료 주기 선택
         browser.find_element_by_xpath('//*[@id="data_interval"]/option[{}]'.format(filter_set[0]+1)).click() # term : option[1] 일간, [2]주간, [3]월간
         time.sleep(1)
 
@@ -230,7 +229,7 @@ if site_num == 0:
 
         time.sleep(1)
         
-        # 저장 경로
+        # save path
         soup = BeautifulSoup(browser.page_source, 'lxml')
         file_name = soup.find('h2', attrs={'class':'float_lang_base_1 inlineblock'}).get_text().replace('/','_')
         save_path = 'C://Users//pjk//desktop//{}.{}'.format(file_name, form)
@@ -252,7 +251,7 @@ if site_num == 0:
         data_rows = soup.find('table', attrs={'class':'genTbl closedTbl historicalTbl'}).find('tbody').find_all('tr')
         for row in data_rows:
             columns = row.find_all('td')
-            if len(columns) <= 1: # 의미 없는 데이터 skip
+            if len(columns) <= 1: 
                 continue
             data = [column.get_text().strip() for column in columns]
             writer.writerow(data)
@@ -262,7 +261,7 @@ if site_num == 0:
 
 # =============================================================================================================================================================================        
 
-# 2. 통계청
+# 2. kostat
 
 elif site_num == 1:
 
@@ -349,7 +348,7 @@ else:
             writer.writerow(data)
         print()
 
-    else: # view == 2
+    else:
         search_list = search[1]
         freq = freq()
         filter_set = freq[0]
@@ -392,7 +391,7 @@ else:
                     optionEle.click()
                     break
 
-            # 표 수정창 닫기
+            # 표 edit창 닫기
             browser.find_element_by_xpath('//*[@id="tabs-with-dropdown"]/div[1]/header/div[2]/a').click()
             time.sleep(1)
             
