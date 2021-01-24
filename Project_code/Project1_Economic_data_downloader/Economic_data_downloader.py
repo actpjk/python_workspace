@@ -134,7 +134,6 @@ def search():
         view = int(input('지수 확인 = 1, 데이터 다운로드 = 2\n\n입력 : '))
         if view == 1:
             print('='*100)
-            print('\n','지수만 확인합니다.')
             return view
         else:
             print('\n[FRED 검색 목록]\n\n', list(select.keys()),'\n')
