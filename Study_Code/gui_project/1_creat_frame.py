@@ -54,8 +54,6 @@ cmb_width.current(0)
 cmb_width.pack(side = 'left', padx=5, pady=5)
 
 # 2. 간격 옵션
-
-    
     # 간격 옵션 레이블
 
 lbl_space = Label(frame_option, text = '간격', width = 8)

@@ -401,5 +401,6 @@ else:
             browser.find_element_by_xpath('//*[@id="download-data-{}"]'.format(form)).click()
             print('\n',search_list[i], '의 저장경로는 ', save_path, '입니다.\n')
 
-print('='*100)    
+print('='*100)
 print('\n모든 과정이 완료됐습니다.\n\n프로그램을 종료해주세요.')
+time.sleep(20)    
