@@ -101,7 +101,8 @@ def urls():
             '기대인플레이션율':'https://fred.stlouisfed.org/series/T10YIE',
             '통화유통속도':'https://fred.stlouisfed.org/series/M2V',
             'M2':'https://fred.stlouisfed.org/series/M2',
-            'S&P 500':'https://fred.stlouisfed.org/series/SP500'
+            'S&P 500':'https://fred.stlouisfed.org/series/SP500',
+            '10년 채권 수익률':'https://fred.stlouisfed.org/series/DGS10'
         }
         return select
 
