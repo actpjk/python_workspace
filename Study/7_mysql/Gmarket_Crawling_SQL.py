@@ -4,7 +4,7 @@ import pymysql
 
 headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36'}
 
-db = pymysql.connect(host='localhost', port=3306, user='root', passwd='011936', db='gmarket', charset='utf8')
+db = pymysql.connect(host='localhost', port=3306, user='root', passwd='0000', db='gmarket', charset='utf8')
 
 cursor = db.cursor()
 
